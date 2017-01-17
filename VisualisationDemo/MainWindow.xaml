@@ -1,0 +1,297 @@
+﻿<Window
+    x:Class="VisualisationDemo.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:chart="clr-namespace:Syncfusion.UI.Xaml.Charts;assembly=Syncfusion.SfChart.WPF"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:VisualisationDemo"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    Title="MainWindow"
+    Width="1200"
+    Height="800"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <local:TelemetryDataViewModel />
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*" />
+            <ColumnDefinition Width="6*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="6*" />
+            <RowDefinition Height="2*" />
+        </Grid.RowDefinitions>
+
+        <Grid.Resources />
+
+        <chart:SfChart
+            Grid.Row="0"
+            Grid.Column="1"
+            Margin="5">
+            <chart:SfChart.Behaviors>
+                <chart:ChartTrackBallBehavior
+                    LabelDisplayMode="FloatAllPoints"
+                    UseSeriesPalette="True">
+                    <chart:ChartTrackBallBehavior.ChartTrackBallStyle>
+                        <Style TargetType="syncfusion:ChartTrackBallControl">
+                            <Setter Property="Background" Value="DarkRed" />
+                        </Style>
+                    </chart:ChartTrackBallBehavior.ChartTrackBallStyle>
+                </chart:ChartTrackBallBehavior>
+
+                <syncfusion:ChartZoomPanBehavior
+                    EnableZoomingToolBar="True"
+                    ToolBarItemHeight="15"
+                    ToolBarItemMargin="10"
+                    ToolBarItemWidth="15"
+                    ToolBarItems="Reset" />
+
+
+            </chart:SfChart.Behaviors>
+
+            <chart:SfChart.Legend>
+
+                <StackPanel>
+                    <chart:ChartLegend
+                        BorderBrush="Black"
+                        BorderThickness="1"
+                        CheckBoxVisibility="Visible"
+                        CornerRadius="5"
+                        DockPosition="Right"
+                        IconHeight="18"
+                        IconVisibility="Visible"
+                        IconWidth="18"
+                        ItemMargin="10"
+                        Orientation="Vertical" />
+                </StackPanel>
+            </chart:SfChart.Legend>
+
+
+            <chart:SfChart.PrimaryAxis>
+                <chart:DateTimeAxis
+                    FontSize="14"
+                    Header="Time"
+                    ShowTrackBallInfo="True"
+                    ZoomFactor="{Binding ElementName=RangeNavigator, Path=ZoomFactor, Mode=TwoWay}"
+                    ZoomPosition="{Binding ElementName=RangeNavigator, Path=ZoomPosition, Mode=TwoWay}" />
+            </chart:SfChart.PrimaryAxis>
+
+            <chart:FastScatterBitmapSeries
+                EnableAnimation="True"
+                Interior="DodgerBlue"
+                ItemsSource="{Binding MeasurementsOfDeviceA}"
+                Label="P1"
+                ScatterHeight="4"
+                ScatterWidth="4"
+                Visibility="{Binding IsP1Enabled, Converter={StaticResource BoolToVisibilityConverter}}"
+                XBindingPath="Timestamp"
+                YBindingPath="P1">
+
+
+                <chart:FastScatterBitmapSeries.YAxis>
+                    <chart:NumericalAxis
+                        FontSize="14"
+                        Foreground="DodgerBlue"
+                        Header="Pressure P1  [bar]"
+                        Maximum="{Binding Path=P1YAxisMaximum, Mode=TwoWay}"
+                        Minimum="{Binding Path=P1YAxisMinimum, Mode=TwoWay}"
+                        Visibility="{Binding IsP1Enabled, Converter={StaticResource BoolToVisibilityConverter}}" />
+                </chart:FastScatterBitmapSeries.YAxis>
+
+                <!--This makes a trendline which doesn't make sense. Does it use a reverse timeline?
+                <chart:FastScatterBitmapSeries.Trendlines>
+                    <chart:Trendline
+                        Label="Trend"
+                        Type="Linear" />
+                </chart:FastScatterBitmapSeries.Trendlines>-->
+
+            </chart:FastScatterBitmapSeries>
+
+            <syncfusion:FastScatterBitmapSeries
+                EnableAnimation="True"
+                Interior="OrangeRed"
+                ItemsSource="{Binding MeasurementsOfDeviceA}"
+                Label="TOB 1"
+                ScatterHeight="4"
+                ScatterWidth="4"
+                Visibility="{Binding IsTob1Enabled, Converter={StaticResource BoolToVisibilityConverter}}"
+                XBindingPath="Timestamp"
+                YBindingPath="Tob1">
+                <!--<chart:ScatterSeries.Trendlines>
+                    <chart:Trendline
+                        Label="Trend"
+                        Type="Linear" />
+                </chart:ScatterSeries.Trendlines>-->
+
+                <chart:FastScatterBitmapSeries.YAxis>
+
+                    <chart:NumericalAxis
+                        FontSize="14"
+                        Foreground="OrangeRed"
+                        Header="Temperature TOB1  [°C]"
+                        Visibility="{Binding IsTob1Enabled, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                </chart:FastScatterBitmapSeries.YAxis>
+            </syncfusion:FastScatterBitmapSeries>
+        </chart:SfChart>
+
+
+        <chart:SfDateTimeRangeNavigator
+            x:Name="RangeNavigator"
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="10"
+            ItemsSource="{Binding MeasurementsOfDeviceA}"
+            ShowToolTip="true"
+            ToolTipLabelFormat="dd/MMM/yyyy"
+            XBindingPath="Timestamp">
+            <chart:SfDateTimeRangeNavigator.Content>
+
+                <!--  // I don't see a line nor points with this  -->
+                <!--
+                <chart:ScatterSeries
+                    ItemsSource="{Binding MeasurementsOfDeviceA}"
+                    XBindingPath="Timestamp"
+                    YBindingPath="P1" />-->
+
+                <!--  or  -->
+
+                <chart:SfChart>
+                    <chart:SfChart.PrimaryAxis>
+                        <chart:DateTimeAxis
+                            IsEnabled="False"
+                            ShowGridLines="False">
+                            <chart:DateTimeAxis.LabelStyle>
+                                <chart:LabelStyle FontSize="0.1" />
+                            </chart:DateTimeAxis.LabelStyle>
+                        </chart:DateTimeAxis>
+                    </chart:SfChart.PrimaryAxis>
+
+                    <!--  That can't be the solution! How can I get rid of the grid and label information?  -->
+
+                    <chart:SfChart.SecondaryAxis>
+                        <syncfusion:NumericalAxis ShowGridLines="False">
+                            <syncfusion:NumericalAxis.LabelStyle>
+                                <syncfusion:LabelStyle FontSize="0.1" />
+                            </syncfusion:NumericalAxis.LabelStyle>
+                        </syncfusion:NumericalAxis>
+                    </chart:SfChart.SecondaryAxis>
+
+                    <chart:ScatterSeries
+                        Interior="Gray"
+                        ItemsSource="{Binding MeasurementsOfDeviceA}"
+                        ScatterHeight="2"
+                        ScatterWidth="2"
+                        XBindingPath="Timestamp"
+                        YBindingPath="P1" />
+
+                    <chart:ScatterSeries
+                        Interior="Red"
+                        ItemsSource="{Binding MeasurementsOfDeviceA}"
+                        ScatterHeight="2"
+                        ScatterWidth="2"
+                        XBindingPath="Timestamp"
+                        YBindingPath="Tob1" />
+                </chart:SfChart>
+
+            </chart:SfDateTimeRangeNavigator.Content>
+        </chart:SfDateTimeRangeNavigator>
+
+
+        <StackPanel
+            Grid.Row="0"
+            Grid.Column="2">
+            <GroupBox
+                Margin="10,10,10,10"
+                VerticalAlignment="Top"
+                Header="Channels">
+                <Grid Height="200">
+                    <StackPanel>
+                        <CheckBox
+                            Margin="5"
+                            Content="Pressure P1"
+                            IsChecked="{Binding IsP1Enabled, Mode=TwoWay}" />
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Width="40">Max:</Label>
+                                    <syncfusion:DoubleTextBox
+                                        x:Name="TextBox2"
+                                        Width="50"
+                                        Height="23"
+                                        NumberDecimalDigits="2"
+                                        Text="{Binding P1YAxisMaximum, Mode=TwoWay}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Width="40">Min:</Label>
+                                    <syncfusion:DoubleTextBox
+                                        x:Name="TextBox1"
+                                        Width="50"
+                                        Height="23"
+                                        NumberDecimalDigits="2"
+                                        Text="{Binding P1YAxisMinimum, Mode=TwoWay}" />
+                                </StackPanel>
+                            </StackPanel>
+                            <Button
+                                Margin="4"
+                                Click="Button_Click"
+                                Content="Auto" />
+                        </StackPanel>
+                        <CheckBox
+                            Margin="5"
+                            Content="Temperature TOB1"
+                            IsChecked="{Binding IsTob1Enabled, Mode=TwoWay}" />
+                        <CheckBox
+                            Margin="5"
+                            Content="Battery voltage" />
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
+
+            <GroupBox
+                Margin="10,10,10,10"
+                VerticalAlignment="Top"
+                Header="Time-Filter">
+                <Grid Height="auto">
+                    <StackPanel>
+                        <Label>Start:</Label>
+                        <syncfusion:DateTimeEdit
+                            CanEdit="True"
+                            CultureInfo="de-CH"
+                            DateTime="{Binding ViewRangeStart, ElementName=RangeNavigator, Mode=TwoWay}"
+                            IsCalendarEnabled="True"
+                            IsScrollingOnCircle="True"
+                            OnFocusBehavior="Default"
+                            Pattern="SortableDateTime"
+                            SelectWholeContent="False" />
+                        <Label>End:</Label>
+                        <syncfusion:DateTimeEdit
+                            CanEdit="True"
+                            CultureInfo="de-CH"
+                            DateTime="{Binding ElementName=RangeNavigator, Path=ViewRangeEnd, Mode=TwoWay}"
+                            IsCalendarEnabled="True"
+                            IsScrollingOnCircle="True"
+                            OnFocusBehavior="Default"
+                            Pattern="ShortDate"
+                            SelectWholeContent="False" />
+                        <syncfusion:DateTimeEdit
+                            CanEdit="True"
+                            CultureInfo="de-CH"
+                            DateTime="{Binding ElementName=RangeNavigator, Path=ViewRangeEnd, Mode=TwoWay}"
+                            IsCalendarEnabled="True"
+                            IsScrollingOnCircle="True"
+                            OnFocusBehavior="Default"
+                            Pattern="ShortTime"
+                            SelectWholeContent="False" />
+                    </StackPanel>
+
+                </Grid>
+            </GroupBox>
+
+        </StackPanel>
+    </Grid>
+</Window>
