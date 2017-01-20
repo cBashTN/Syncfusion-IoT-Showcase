@@ -49,12 +49,9 @@
                     ToolBarItemMargin="10"
                     ToolBarItemWidth="15"
                     ToolBarItems="Reset" />
-
-
             </chart:SfChart.Behaviors>
 
             <chart:SfChart.Legend>
-
                 <StackPanel>
                     <chart:ChartLegend
                         BorderBrush="Black"
@@ -73,6 +70,7 @@
 
             <chart:SfChart.PrimaryAxis>
                 <chart:DateTimeAxis
+                    EdgeLabelsDrawingMode="Shift"
                     FontSize="14"
                     Header="Time"
                     ShowTrackBallInfo="True"
@@ -83,6 +81,7 @@
             <chart:FastScatterBitmapSeries
                 EnableAnimation="True"
                 Interior="DodgerBlue"
+                IsSeriesVisible="{Binding IsP1Enabled}"
                 ItemsSource="{Binding MeasurementsOfDeviceA}"
                 Label="P1"
                 ScatterHeight="4"
@@ -91,14 +90,11 @@
                 XBindingPath="Timestamp"
                 YBindingPath="P1">
 
-
                 <chart:FastScatterBitmapSeries.YAxis>
                     <chart:NumericalAxis
                         FontSize="14"
                         Foreground="DodgerBlue"
                         Header="Pressure P1  [bar]"
-                        Maximum="{Binding Path=P1YAxisMaximum, Mode=TwoWay}"
-                        Minimum="{Binding Path=P1YAxisMinimum, Mode=TwoWay}"
                         Visibility="{Binding IsP1Enabled, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </chart:FastScatterBitmapSeries.YAxis>
 
@@ -111,9 +107,10 @@
 
             </chart:FastScatterBitmapSeries>
 
-            <syncfusion:FastScatterBitmapSeries
+            <chart:FastScatterBitmapSeries
                 EnableAnimation="True"
                 Interior="OrangeRed"
+                IsSeriesVisible="{Binding IsTob1Enabled}"
                 ItemsSource="{Binding MeasurementsOfDeviceA}"
                 Label="TOB 1"
                 ScatterHeight="4"
@@ -121,11 +118,11 @@
                 Visibility="{Binding IsTob1Enabled, Converter={StaticResource BoolToVisibilityConverter}}"
                 XBindingPath="Timestamp"
                 YBindingPath="Tob1">
-                <!--<chart:ScatterSeries.Trendlines>
+                <chart:FastScatterBitmapSeries.Trendlines>
                     <chart:Trendline
                         Label="Trend"
                         Type="Linear" />
-                </chart:ScatterSeries.Trendlines>-->
+                </chart:FastScatterBitmapSeries.Trendlines>
 
                 <chart:FastScatterBitmapSeries.YAxis>
 
@@ -136,7 +133,7 @@
                         Visibility="{Binding IsTob1Enabled, Converter={StaticResource BoolToVisibilityConverter}}" />
 
                 </chart:FastScatterBitmapSeries.YAxis>
-            </syncfusion:FastScatterBitmapSeries>
+            </chart:FastScatterBitmapSeries>
         </chart:SfChart>
 
 
@@ -146,39 +143,25 @@
             Grid.Column="1"
             Margin="10"
             ItemsSource="{Binding MeasurementsOfDeviceA}"
+            RangePadding="None"
             ShowToolTip="true"
             ToolTipLabelFormat="dd/MMM/yyyy"
+            ViewRangeEnd="{Binding PrimaryAxisViewRangeEnd, Mode=TwoWay}"
+            ViewRangeStart="{Binding PrimaryAxisViewRangeStart, Mode=TwoWay}"
             XBindingPath="Timestamp">
             <chart:SfDateTimeRangeNavigator.Content>
 
-                <!--  // I don't see a line nor points with this  -->
-                <!--
-                <chart:ScatterSeries
-                    ItemsSource="{Binding MeasurementsOfDeviceA}"
-                    XBindingPath="Timestamp"
-                    YBindingPath="P1" />-->
-
-                <!--  or  -->
-
                 <chart:SfChart>
+
                     <chart:SfChart.PrimaryAxis>
                         <chart:DateTimeAxis
-                            IsEnabled="False"
-                            ShowGridLines="False">
-                            <chart:DateTimeAxis.LabelStyle>
-                                <chart:LabelStyle FontSize="0.1" />
-                            </chart:DateTimeAxis.LabelStyle>
-                        </chart:DateTimeAxis>
+                            ShowGridLines="False"
+                            Visibility="Collapsed" />
                     </chart:SfChart.PrimaryAxis>
-
-                    <!--  That can't be the solution! How can I get rid of the grid and label information?  -->
-
                     <chart:SfChart.SecondaryAxis>
-                        <syncfusion:NumericalAxis ShowGridLines="False">
-                            <syncfusion:NumericalAxis.LabelStyle>
-                                <syncfusion:LabelStyle FontSize="0.1" />
-                            </syncfusion:NumericalAxis.LabelStyle>
-                        </syncfusion:NumericalAxis>
+                        <syncfusion:NumericalAxis
+                            ShowGridLines="False"
+                            Visibility="Collapsed" />
                     </chart:SfChart.SecondaryAxis>
 
                     <chart:ScatterSeries
@@ -204,6 +187,7 @@
 
         <StackPanel
             Grid.Row="0"
+            Grid.RowSpan="2"
             Grid.Column="2">
             <GroupBox
                 Margin="10,10,10,10"
@@ -220,7 +204,6 @@
                                 <StackPanel Orientation="Horizontal">
                                     <Label Width="40">Max:</Label>
                                     <syncfusion:DoubleTextBox
-                                        x:Name="TextBox2"
                                         Width="50"
                                         Height="23"
                                         NumberDecimalDigits="2"
@@ -229,7 +212,6 @@
                                 <StackPanel Orientation="Horizontal">
                                     <Label Width="40">Min:</Label>
                                     <syncfusion:DoubleTextBox
-                                        x:Name="TextBox1"
                                         Width="50"
                                         Height="23"
                                         NumberDecimalDigits="2"
@@ -259,20 +241,10 @@
                 <Grid Height="auto">
                     <StackPanel>
                         <Label>Start:</Label>
-                        <syncfusion:DateTimeEdit
+                        <!--<syncfusion:DateTimeEdit
                             CanEdit="True"
                             CultureInfo="de-CH"
-                            DateTime="{Binding ViewRangeStart, ElementName=RangeNavigator, Mode=TwoWay}"
-                            IsCalendarEnabled="True"
-                            IsScrollingOnCircle="True"
-                            OnFocusBehavior="Default"
-                            Pattern="SortableDateTime"
-                            SelectWholeContent="False" />
-                        <Label>End:</Label>
-                        <syncfusion:DateTimeEdit
-                            CanEdit="True"
-                            CultureInfo="de-CH"
-                            DateTime="{Binding ElementName=RangeNavigator, Path=ViewRangeEnd, Mode=TwoWay}"
+                            DateTime="{Binding Path=PrimaryAxisMinimum, Mode=TwoWay}"
                             IsCalendarEnabled="True"
                             IsScrollingOnCircle="True"
                             OnFocusBehavior="Default"
@@ -281,12 +253,49 @@
                         <syncfusion:DateTimeEdit
                             CanEdit="True"
                             CultureInfo="de-CH"
-                            DateTime="{Binding ElementName=RangeNavigator, Path=ViewRangeEnd, Mode=TwoWay}"
+                            DateTime="{Binding Path=PrimaryAxisMinimum, Mode=TwoWay}"
                             IsCalendarEnabled="True"
                             IsScrollingOnCircle="True"
                             OnFocusBehavior="Default"
                             Pattern="ShortTime"
-                            SelectWholeContent="False" />
+                            SelectWholeContent="False" />-->
+                        <!--<syncfusion:SfDatePicker  Value="{Binding Path=PrimaryAxisMinimum, Mode=TwoWay}"  AllowInlineEditing="True" InputScope="Number"/>
+                        <syncfusion:SfTimePicker  Value="{Binding Path=PrimaryAxisMinimum, Mode=TwoWay}"  AllowInlineEditing="True" InputScope="Number"/>-->
+
+                        <syncfusion:SfDatePicker
+                            VerticalAlignment="Center"
+                            DateTime="{Binding Path=PrimaryAxisViewRangeStart, Mode=TwoWay}"
+                            InputScope="Number" />
+                        <syncfusion:SfTimePicker
+                            VerticalAlignment="Center"
+                            Value="{Binding Path=PrimaryAxisViewRangeStart, Mode=TwoWay}" />
+
+                        <!--<Label>Start-Min</Label>
+                        <syncfusion:SfDatePicker
+                            VerticalAlignment="Center"
+                            DateTime="{Binding Path=PrimaryAxisMinimum, Mode=TwoWay}"
+                            InputScope="Number" />
+                        <syncfusion:SfTimePicker
+                            VerticalAlignment="Center"
+                            Value="{Binding Path=PrimaryAxisMinimum, Mode=TwoWay}" />-->
+
+                        <Label>End:</Label>
+                        <syncfusion:SfDatePicker
+                            VerticalAlignment="Center"
+                            DateTime="{Binding Path=PrimaryAxisViewRangeEnd, Mode=TwoWay}"
+                            InputScope="Number" />
+                        <syncfusion:SfTimePicker
+                            VerticalAlignment="Center"
+                            Value="{Binding Path=PrimaryAxisViewRangeEnd, Mode=TwoWay}" />
+                        <!--<Label>Start-Max</Label>
+                        <syncfusion:SfDatePicker
+                            VerticalAlignment="Center"
+                            DateTime="{Binding Path=PrimaryAxisMaximum, Mode=TwoWay}"
+                            InputScope="Number" />
+                        <syncfusion:SfTimePicker
+                            VerticalAlignment="Center"
+                            Value="{Binding Path=PrimaryAxisMaximum, Mode=TwoWay}" />-->
+
                     </StackPanel>
 
                 </Grid>

@@ -16,8 +16,8 @@ namespace VisualisationDemo
             IsP1Enabled = true;
             IsTob1Enabled = true;
 
-            P1YAxisMaximum = MeasurementsOfDeviceA.Max(i => i.P1);
-            P1YAxisMinimum = MeasurementsOfDeviceA.Min(i => i.P1);
+           // P1YAxisMaximum = MeasurementsOfDeviceA.Max(i => i.P1);
+           // P1YAxisMinimum = MeasurementsOfDeviceA.Min(i => i.P1);
         }
 
 
@@ -27,8 +27,11 @@ namespace VisualisationDemo
         public double P1YAxisMaximum { get; set; }
         public double P1YAxisMinimum { get; set; }
 
+        public DateTime PrimaryAxisViewRangeStart { get; set; }
+        public DateTime PrimaryAxisViewRangeEnd { get; set; }
 
-
+        public DateTime PrimaryAxisMaximum { get; set; }
+        public DateTime PrimaryAxisMinimum { get; set; }
 
         private static IEnumerable<Measurement> _measurements;
         private static IEnumerable<Measurement> Measurements => _measurements ?? (_measurements = TelemetryData.GetMeasurements());
