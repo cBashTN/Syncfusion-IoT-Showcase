@@ -89,6 +89,12 @@
                 Visibility="{Binding IsP1Enabled, Converter={StaticResource BoolToVisibilityConverter}}"
                 XBindingPath="Timestamp"
                 YBindingPath="P1">
+                <chart:FastScatterBitmapSeries.Trendlines>
+                    <chart:Trendline
+                        Label="Trend"
+                        Stroke="Aqua"
+                        Type="Linear" />
+                </chart:FastScatterBitmapSeries.Trendlines>
 
                 <chart:FastScatterBitmapSeries.YAxis>
                     <chart:NumericalAxis
@@ -97,14 +103,6 @@
                         Header="Pressure P1  [bar]"
                         Visibility="{Binding IsP1Enabled, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </chart:FastScatterBitmapSeries.YAxis>
-
-                <!--This makes a trendline which doesn't make sense. Does it use a reverse timeline?
-                <chart:FastScatterBitmapSeries.Trendlines>
-                    <chart:Trendline
-                        Label="Trend"
-                        Type="Linear" />
-                </chart:FastScatterBitmapSeries.Trendlines>-->
-
             </chart:FastScatterBitmapSeries>
 
             <chart:FastScatterBitmapSeries
@@ -121,17 +119,16 @@
                 <chart:FastScatterBitmapSeries.Trendlines>
                     <chart:Trendline
                         Label="Trend"
+                        Stroke="Crimson"
                         Type="Linear" />
                 </chart:FastScatterBitmapSeries.Trendlines>
 
                 <chart:FastScatterBitmapSeries.YAxis>
-
                     <chart:NumericalAxis
                         FontSize="14"
                         Foreground="OrangeRed"
                         Header="Temperature TOB1  [°C]"
                         Visibility="{Binding IsTob1Enabled, Converter={StaticResource BoolToVisibilityConverter}}" />
-
                 </chart:FastScatterBitmapSeries.YAxis>
             </chart:FastScatterBitmapSeries>
         </chart:SfChart>
@@ -152,7 +149,6 @@
             <chart:SfDateTimeRangeNavigator.Content>
 
                 <chart:SfChart>
-
                     <chart:SfChart.PrimaryAxis>
                         <chart:DateTimeAxis
                             ShowGridLines="False"
@@ -165,20 +161,20 @@
                     </chart:SfChart.SecondaryAxis>
 
                     <chart:ScatterSeries
-                        Interior="Gray"
+                        Interior="DodgerBlue"
                         ItemsSource="{Binding MeasurementsOfDeviceA}"
                         ScatterHeight="2"
                         ScatterWidth="2"
                         XBindingPath="Timestamp"
                         YBindingPath="P1" />
 
-                    <chart:ScatterSeries
-                        Interior="Red"
+                    <!--<chart:ScatterSeries
+                        Interior="OrangeRed"
                         ItemsSource="{Binding MeasurementsOfDeviceA}"
                         ScatterHeight="2"
                         ScatterWidth="2"
                         XBindingPath="Timestamp"
-                        YBindingPath="Tob1" />
+                        YBindingPath="Tob1" />-->
                 </chart:SfChart>
 
             </chart:SfDateTimeRangeNavigator.Content>
@@ -241,27 +237,6 @@
                 <Grid Height="auto">
                     <StackPanel>
                         <Label>Start:</Label>
-                        <!--<syncfusion:DateTimeEdit
-                            CanEdit="True"
-                            CultureInfo="de-CH"
-                            DateTime="{Binding Path=PrimaryAxisMinimum, Mode=TwoWay}"
-                            IsCalendarEnabled="True"
-                            IsScrollingOnCircle="True"
-                            OnFocusBehavior="Default"
-                            Pattern="ShortDate"
-                            SelectWholeContent="False" />
-                        <syncfusion:DateTimeEdit
-                            CanEdit="True"
-                            CultureInfo="de-CH"
-                            DateTime="{Binding Path=PrimaryAxisMinimum, Mode=TwoWay}"
-                            IsCalendarEnabled="True"
-                            IsScrollingOnCircle="True"
-                            OnFocusBehavior="Default"
-                            Pattern="ShortTime"
-                            SelectWholeContent="False" />-->
-                        <!--<syncfusion:SfDatePicker  Value="{Binding Path=PrimaryAxisMinimum, Mode=TwoWay}"  AllowInlineEditing="True" InputScope="Number"/>
-                        <syncfusion:SfTimePicker  Value="{Binding Path=PrimaryAxisMinimum, Mode=TwoWay}"  AllowInlineEditing="True" InputScope="Number"/>-->
-
                         <syncfusion:SfDatePicker
                             VerticalAlignment="Center"
                             DateTime="{Binding Path=PrimaryAxisViewRangeStart, Mode=TwoWay}"
@@ -269,15 +244,6 @@
                         <syncfusion:SfTimePicker
                             VerticalAlignment="Center"
                             Value="{Binding Path=PrimaryAxisViewRangeStart, Mode=TwoWay}" />
-
-                        <!--<Label>Start-Min</Label>
-                        <syncfusion:SfDatePicker
-                            VerticalAlignment="Center"
-                            DateTime="{Binding Path=PrimaryAxisMinimum, Mode=TwoWay}"
-                            InputScope="Number" />
-                        <syncfusion:SfTimePicker
-                            VerticalAlignment="Center"
-                            Value="{Binding Path=PrimaryAxisMinimum, Mode=TwoWay}" />-->
 
                         <Label>End:</Label>
                         <syncfusion:SfDatePicker
@@ -287,14 +253,6 @@
                         <syncfusion:SfTimePicker
                             VerticalAlignment="Center"
                             Value="{Binding Path=PrimaryAxisViewRangeEnd, Mode=TwoWay}" />
-                        <!--<Label>Start-Max</Label>
-                        <syncfusion:SfDatePicker
-                            VerticalAlignment="Center"
-                            DateTime="{Binding Path=PrimaryAxisMaximum, Mode=TwoWay}"
-                            InputScope="Number" />
-                        <syncfusion:SfTimePicker
-                            VerticalAlignment="Center"
-                            Value="{Binding Path=PrimaryAxisMaximum, Mode=TwoWay}" />-->
 
                     </StackPanel>
 

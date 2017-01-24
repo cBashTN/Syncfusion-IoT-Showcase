@@ -16,10 +16,9 @@ namespace VisualisationDemo
             IsP1Enabled = true;
             IsTob1Enabled = true;
 
-           // P1YAxisMaximum = MeasurementsOfDeviceA.Max(i => i.P1);
-           // P1YAxisMinimum = MeasurementsOfDeviceA.Min(i => i.P1);
+            P1YAxisMaximum = MeasurementsOfDeviceA.Max(i => i.P1);
+            P1YAxisMinimum = MeasurementsOfDeviceA.Min(i => i.P1);
         }
-
 
         public bool IsP1Enabled { get; set; }
         public bool IsTob1Enabled { get; set; }
@@ -60,7 +59,5 @@ namespace VisualisationDemo
 
         //private static ObservableCollection<Measurement> _measurementsOfDeviceD;
         //public static ObservableCollection<Measurement> MeasurementsOfDeviceD => _measurementsOfDeviceD ?? (_measurementsOfDeviceD = new ObservableCollection<Measurement>(Measurements.Where(x => x.DeviceId == Devices[3])));
-
-
     }
 }

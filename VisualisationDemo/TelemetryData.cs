@@ -10,7 +10,7 @@ namespace VisualisationDemo
 {
     public static class TelemetryData
     {
-        private const string DataFilePath = "DemoMeasurement.csv";
+        private const string DataFilePath = @"DemoMeasurement.csv";
 
         public static ObservableCollection<Measurement> GetMeasurements()
         {
